@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import Filter from './components/Filter'
+import Persons from './components/Persons'
+import PersonForm from './components/PersonForm'
 
 const App = () => {
   const [ persons, setPersons ] = useState([
@@ -7,31 +10,25 @@ const App = () => {
     { name: 'Dan Abramov', number: '12-43-234345' },
     { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
+
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
 
-  // render the list of numbers
-
-  const numberRows = () => {
-    let personsArr = persons
-    
-    // if filter not empty, filter the array to be shown
-    if (newFilter) personsArr = persons.filter(person => 
+  // filter shown numbers
+  const filterPersons = () => (
+  // if filter not empty, filter the array accordingly
+    !newFilter ? persons :
+      persons.filter(person => 
         person.name.toLowerCase()
-          .includes(newFilter.trim().toLowerCase()))
+          .includes(newFilter.trim().toLowerCase())) 
+  )
 
-    return (
-      personsArr.map(person =>
-        <tr key={person.name.trim()}>
-          <td>{person.name}</td>
-          <td>{person.number}</td>
-        </tr>
-      )
-    )
+  const handleFilterChange = (event) => {
+    setNewFilter(event.target.value)
   }
 
-  // add a new name to the list
+  // add a new name to the list 
   const addNumber = (event) => {
     event.preventDefault()
     const personObj = {
@@ -63,51 +60,17 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
-  const handleFilterChange = (event) => {
-    setNewFilter(event.target.value)
-  }
-
   return (
     <div>
       <h2>Phonebook</h2>
-      filter shown with
-      <input type="text" value={newFilter} 
-              onChange={handleFilterChange} 
-            />
-      <h2>Add a new</h2>
-      <form onSubmit={addNumber}>
-        <div>
-          name: <input 
-                  type="text"
-                  value={newName}
-                  onChange={handleNameChange}  
-                />
-        </div>
-        <div>
-          number: <input
-                    type="text"
-                    value={newNumber}
-                    onChange={handleNumberChange}
-                  />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Number</th>
-            </tr>
-          </thead>
-          <tbody>
-            {numberRows()}
-          </tbody>
-        </table>
-      </div>
+      <Filter value={newFilter} onChange={handleFilterChange} />
+      <h3>Add a new</h3>
+      <PersonForm onSubmit={addNumber}
+        inputAttributes=
+          {[newName, handleNameChange, newNumber, handleNumberChange]}
+      />
+      <h3>Numbers</h3>
+      <Persons persons={filterPersons()} />
     </div>
   )
 }
