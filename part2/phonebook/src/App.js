@@ -2,23 +2,34 @@ import React, { useState } from 'react'
 
 const App = () => {
   const [ persons, setPersons ] = useState([
-    {
-      name: 'Arto Hellas',
-      number: '040-1234567'
-    }
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
+  const [ newFilter, setNewFilter ] = useState('')
 
   // render the list of numbers
-  const numberRows = () => (
-    persons.map(person =>
-      <tr key={person.name.trim()}>
-        <td>{person.name}</td>
-        <td>{person.number}</td>
-      </tr>
+
+  const numberRows = () => {
+    let personsArr = persons
+    
+    // if filter not empty, filter the array to be shown
+    if (newFilter) personsArr = persons.filter(person => 
+        person.name.toLowerCase()
+          .includes(newFilter.trim().toLowerCase()))
+
+    return (
+      personsArr.map(person =>
+        <tr key={person.name.trim()}>
+          <td>{person.name}</td>
+          <td>{person.number}</td>
+        </tr>
+      )
     )
-  )
+  }
 
   // add a new name to the list
   const addNumber = (event) => {
@@ -52,18 +63,29 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  const handleFilterChange = (event) => {
+    setNewFilter(event.target.value)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
+      filter shown with
+      <input type="text" value={newFilter} 
+              onChange={handleFilterChange} 
+            />
+      <h2>Add a new</h2>
       <form onSubmit={addNumber}>
         <div>
           name: <input 
+                  type="text"
                   value={newName}
                   onChange={handleNameChange}  
                 />
         </div>
         <div>
           number: <input
+                    type="text"
                     value={newNumber}
                     onChange={handleNumberChange}
                   />
