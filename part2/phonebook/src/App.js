@@ -7,24 +7,28 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
 
   const listNames = () => (
-      persons.map(person => <li key="{person.name}">{person.name}</li>)
+    persons.map(person => <li key={person.name.trim()}>{person.name}</li>)
   )
 
   const addPerson = (event) => {
     event.preventDefault()
     const personObj = {
-      name: newName
+      name: newName.trim(),
     }
 
-    setPersons(persons.concat(personObj))
-    setNewName('')
+    // without .trim and lowercase, the check would fail
+    if (persons.find(person => 
+          person.name.toLowerCase() === newName.trim().toLowerCase())) {
+      alert(`${newName} is already added to phonebook`)
+    } else {
+      setPersons(persons.concat(personObj))
+      setNewName('')
+    }
   }
 
   const handleNameChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value) 
   }
-
 
 
   return (
