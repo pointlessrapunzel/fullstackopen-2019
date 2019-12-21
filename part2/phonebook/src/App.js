@@ -11,16 +11,12 @@ const App = () => {
   const [ newFilter, setNewFilter ] = useState('')
 
   useEffect(() => {
-    console.log('effect')
     axios
       .get('http://localhost:3001/persons')
       .then(response => {
-        console.log('promise fulfilled')
-        console.log(response)
         setPersons(response.data)
       })
   }, [])
-  console.log('render', persons.length, 'persons')
 
   // filter shown numbers
   const filterPersons = () => (
