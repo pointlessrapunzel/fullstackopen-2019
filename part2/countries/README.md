@@ -1,0 +1,1 @@
+This is my solution for [ex 2.12-14 Data for countries](https://fullstackopen.com/en/part2/getting_data_from_server#exercises), from [Full Stack Open MOOC](https://fullstackopen.com/en) by the University of Helsiki. The application connects to https://restcountries.eu API, that provides data about different countries of the world, and displays data from it.
