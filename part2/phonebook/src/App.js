@@ -32,26 +32,31 @@ const App = () => {
   }
 
   // add a new name to the list 
-  const addNumber = (event) => {
+  const addPerson = (event) => {
     event.preventDefault()
     const personObj = {
       name: newName.trim(),
       number: newNumber.trim()
     }
-
     // disallow adding an already existing name
     // .trim and lowercase are needed for successful check
     if (persons.find(person => 
           person.name.toLowerCase() === newName.trim().toLowerCase())) {
       alert(`${newName} is already added to phonebook`)
-    } 
+    }
     // if name or number fields are empty
     else if (!newName || !newNumber) {
       alert("You have to enter a name and a number!")
     } else {
-      setPersons(persons.concat(personObj))
-      setNewName('')
-      setNewNumber('')
+      axios
+        .post('http://localhost:3001/persons', personObj)
+        .then(response => {
+          console.log(response)
+          setPersons(persons.concat(personObj))
+          setNewName('')
+          setNewNumber('')
+          }
+        )
     }
   }
 
@@ -68,7 +73,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter value={newFilter} onChange={handleFilterChange} />
       <h3>Add a new</h3>
-      <PersonForm onSubmit={addNumber}
+      <PersonForm onSubmit={addPerson}
         inputAttributes=
           {[newName, handleNameChange, newNumber, handleNumberChange]}
       />
