@@ -10,13 +10,18 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
 
+  // asking the server for the list of persons
   useEffect(() => {
     personService
       .getAll()
       .then(initialPersons => setPersons(initialPersons))
   }, [])
 
-  // filter shown numbers
+  /*
+
+    FILTERING THE LIST OF PERSONS
+
+  */
   const filterPersons = () => (
   // if filter not empty, filter the array accordingly
     !newFilter ? persons :
@@ -29,7 +34,11 @@ const App = () => {
     setNewFilter(event.target.value)
   }
 
-  // add a new name to the list 
+  /*
+
+    ADDING A NEW PERSON
+
+  */
   const addPerson = (event) => {
     event.preventDefault()
     const personObj = {
@@ -64,6 +73,20 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  /*
+
+    REMOVING A PERSON
+
+  */
+
+ const removePerson = id => () => {
+   personService
+    .remove(id)
+    .then(() =>
+      setPersons(persons.filter(p => p.id !== id))
+    )
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -74,7 +97,10 @@ const App = () => {
           {[newName, handleNameChange, newNumber, handleNumberChange]}
       />
       <h3>Numbers</h3>
-      <Persons persons={filterPersons()} />
+      <Persons 
+        persons={filterPersons()} 
+        removePerson={removePerson}  
+      />
     </div>
   )
 }

@@ -1,13 +1,18 @@
 import React from 'react'
 
-const Person = ({ person }) => (
+const Person = ({ person, removePerson }) => (
   <tr>
     <td>{person.name}</td>
     <td>{person.number}</td>
+    <td>
+      <button type="button" onClick={removePerson(person.id)}>
+        delete
+      </button>
+    </td>
   </tr>
 )
 
-const Persons = ({ persons }) => (
+const Persons = ({ persons, removePerson }) => (
   <div>
     <table>
       <thead>
@@ -18,7 +23,7 @@ const Persons = ({ persons }) => (
       </thead>
       <tbody>
         {persons.map(person => 
-          <Person key={person.id} person={person} />)
+          <Person key={person.id} person={person} removePerson={removePerson}/>)
         }
       </tbody>
     </table>
