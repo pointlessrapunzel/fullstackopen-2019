@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
+import personService from './services/persons'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
@@ -11,11 +11,9 @@ const App = () => {
   const [ newFilter, setNewFilter ] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      })
+    personService
+      .getAll()
+      .then(initialPersons => setPersons(initialPersons))
   }, [])
 
   // filter shown numbers
@@ -48,15 +46,13 @@ const App = () => {
     else if (!newName || !newNumber) {
       alert("You have to enter a name and a number!")
     } else {
-      axios
-        .post('http://localhost:3001/persons', personObj)
-        .then(response => {
-          console.log(response)
-          setPersons(persons.concat(personObj))
+      personService
+        .create(personObj)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
-          }
-        )
+        })
     }
   }
 
