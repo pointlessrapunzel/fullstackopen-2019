@@ -45,16 +45,36 @@ const App = () => {
       name: newName.trim(),
       number: newNumber.trim()
     }
-    // disallow adding an already existing name
-    // .trim and lowercase are needed for successful check
-    if (persons.find(person => 
-          person.name.toLowerCase() === newName.trim().toLowerCase())) {
-      alert(`${newName} is already added to phonebook`)
+
+    const findPerson = (name) => {
+      return persons.find(person => 
+        person.name.toLowerCase() 
+          === name.trim().toLowerCase()
+      )
     }
-    // if name or number fields are empty
-    else if (!newName || !newNumber) {
+
+    // form validation
+    if (!newName || !newNumber) {
       alert("You have to enter a name and a number!")
+    } else if (findPerson(newName)) {
+      // person is already added, change the number
+      if (
+        window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
+      ) {
+        personService
+          .update(findPerson(newName).id, personObj)
+          .then(returnedPerson => {
+            setPersons(persons.map(p => 
+              p.id !== returnedPerson.id
+              ? p
+              : returnedPerson
+            ))
+            setNewName('')
+            setNewNumber('')
+          })
+      }
     } else {
+      // add the new person
       personService
         .create(personObj)
         .then(returnedPerson => {
@@ -78,8 +98,7 @@ const App = () => {
     REMOVING A PERSON
 
   */
-
- const removePerson = id => () => {
+  const removePerson = id => () => {
    personService
     .remove(id)
     .then(() =>
