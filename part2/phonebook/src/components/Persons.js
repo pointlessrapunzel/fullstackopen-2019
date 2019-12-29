@@ -14,6 +14,7 @@ const Person = ({ person, removePerson }) => (
 
 const Persons = ({ persons, removePerson }) => (
   <div>
+    <h2>Numbers</h2>
     <table>
       <thead>
         <tr>

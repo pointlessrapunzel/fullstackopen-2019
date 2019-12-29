@@ -3,12 +3,16 @@ import Filter from './components/Filter'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import personService from './services/persons'
+import Notifications from './components/Notifications'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
+
+  const { Success } = Notifications
+  const [ successMessage, setSuccessMessage] = useState(null)
 
   // asking the server for the list of persons
   useEffect(() => {
@@ -79,6 +83,12 @@ const App = () => {
         .create(personObj)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          setSuccessMessage(
+            `Added ${returnedPerson.name}`
+          )
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
           setNewName('')
           setNewNumber('')
         })
@@ -108,14 +118,13 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <Success message={successMessage} />
       <Filter value={newFilter} onChange={handleFilterChange} />
-      <h3>Add a new</h3>
       <PersonForm onSubmit={addPerson}
         inputAttributes=
           {[newName, handleNameChange, newNumber, handleNumberChange]}
       />
-      <h3>Numbers</h3>
       <Persons 
         persons={filterPersons()} 
         removePerson={removePerson}  

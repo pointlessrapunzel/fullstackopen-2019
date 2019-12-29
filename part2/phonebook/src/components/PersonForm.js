@@ -6,25 +6,28 @@ const PersonForm = (props) => {
         newNumber, handleNumberChange ] = inputAttributes
 
   return (
-  <form onSubmit={onSubmit}>
-    <div>
-      name: <input 
-              type="text"
-              value={newName}
-              onChange={handleNameChange}  
-            />
-    </div>
-    <div>
-      number: <input
+  <div>
+    <h2>Add a new</h2>
+    <form onSubmit={onSubmit}>
+      <div>
+        name: <input 
                 type="text"
-                value={newNumber}
-                onChange={handleNumberChange}
+                value={newName}
+                onChange={handleNameChange}  
               />
-    </div>
-    <div>
-      <button type="submit">add</button>
-    </div>
-  </form>
+      </div>
+      <div>
+        number: <input
+                  type="text"
+                  value={newNumber}
+                  onChange={handleNumberChange}
+                />
+      </div>
+      <div>
+        <button type="submit">add</button>
+      </div>
+    </form>
+  </div>
   )
 }
 
