@@ -4,6 +4,7 @@ const Notification = ({message, type}) => {
   if (message === null) return null
 
   const style = {
+    maxWidth: 600,
     fontSize: 20,
     background: 'lightgray',
     borderStyle: 'solid',

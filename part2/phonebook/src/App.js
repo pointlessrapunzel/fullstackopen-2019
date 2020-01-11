@@ -114,6 +114,13 @@ const App = () => {
           setNewName('')
           setNewNumber('')
         })
+        .catch(error => {
+          setNotification({
+            text: error.response.data.error,
+            type: 'danger'
+          })
+          resetNotification()
+        })
     }
   }
 
@@ -160,15 +167,17 @@ const App = () => {
         message={notification.text} 
         type={notification.type}
       />
-      <Filter value={newFilter} onChange={handleFilterChange} />
-      <PersonForm onSubmit={addPerson}
-        inputAttributes=
-          {[newName, handleNameChange, newNumber, handleNumberChange]}
-      />
-      <Persons 
-        persons={filterPersons()} 
-        removePerson={removePerson}  
-      />
+      <div className="phonebook">
+        <Filter value={newFilter} onChange={handleFilterChange} />
+        <PersonForm onSubmit={addPerson}
+          inputAttributes=
+            {[newName, handleNameChange, newNumber, handleNumberChange]}
+        />
+        <Persons 
+          persons={filterPersons()} 
+          removePerson={removePerson}  
+        />
+      </div>
     </div>
   )
 }

@@ -22,8 +22,20 @@ h1 {
 }
 
 #root {
-  width: 800px;
-  margin: 0 auto;
   display: flex;
   justify-content: center;
+}
+
+.phonebook {
+  max-width: 500px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.phonebook > * {
+  flex: 1;
+  flex-basis: 100%;
 }
