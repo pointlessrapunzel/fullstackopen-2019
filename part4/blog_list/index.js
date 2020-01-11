@@ -5,24 +5,8 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const { MONGODB_URI, PORT } = require('./utils/config')
-mongoose.set('useFindAndModify', false)
 
-const blogSchema = mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number
-})
-
-blogSchema.set('toJSON', {
-  virtuals: true,
-  transform: (document, returnedObj) => {
-    delete returnedObj._id
-    delete returnedObj.__v
-  }
-})
-
-const Blog = mongoose.model('Blog', blogSchema)
+const Blog = require('./models/blog')
 
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true, 
