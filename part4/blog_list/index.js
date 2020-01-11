@@ -1,10 +1,10 @@
-require('dotenv').config()
 const http = require('http')
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const { MONGODB_URI, PORT } = require('./utils/config')
 mongoose.set('useFindAndModify', false)
 
 const blogSchema = mongoose.Schema({
@@ -24,10 +24,10 @@ blogSchema.set('toJSON', {
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-const PORT = process.env.PORT
-const mongoUrl = process.env.MONGODB_URI
-
-mongoose.connect(mongoUrl, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(MONGODB_URI, {
+  useNewUrlParser: true, 
+  useUnifiedTopology: true
+})
 
 app.use(cors())
 app.use(bodyParser.json())
