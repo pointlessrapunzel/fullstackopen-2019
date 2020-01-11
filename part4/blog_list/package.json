@@ -1,0 +1,23 @@
+{
+  "name": "blog_list",
+  "version": "0.0.1",
+  "description": "blog list application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "watch": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Valto Aemilius",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.8.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
