@@ -3,6 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 
+const middleware = require('./utils/middleware')
 const { MONGODB_URI } = require('./utils/config')
 const blogsRouter = require('./controllers/blogs')
 
@@ -23,24 +24,11 @@ mongoose.connect(MONGODB_URI, {
 
 app.use(cors())
 app.use(bodyParser.json())
+app.use(middleware.requestLogger)
+
 app.use('/api/blogs', blogsRouter)
 
-const unknownEndpoint = (req, res) => {
-  res.status(404).json({ error: "unknown endpoint" })
-}
-
-app.use(unknownEndpoint)
-
-const errorHandler = (error, req, res, next) => {
-  console.error(error.message)
-
-  if (error.name === 'CastError' && error.kind === 'ObjectId') {
-    return res.status(400).json({ error: 'malformed id' })
-  }
-
-  next(error)
-}
-
-app.use(errorHandler)
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
 
 module.exports = app
