@@ -12,7 +12,7 @@ const app = express()
 console.log('connecting to', MONGODB_URI)
 
 mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true, 
+  useNewUrlParser: true,
   useUnifiedTopology: true
 })
   .then(() => {
