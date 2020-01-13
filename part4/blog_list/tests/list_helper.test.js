@@ -63,6 +63,26 @@ describe('top blogger is', () => {
   })
 })
 
+describe('blog with most likes', () => {
+  test('when list is empty', () => {
+    expect(listHelper.mostLikes([])).toEqual({})
+  })
+
+  test('when list has only one item', () => {
+    expect(listHelper.mostLikes(listWithOneBlog)).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 5
+    })
+  })
+
+  test('when list has more than one item', () => {
+    expect(listHelper.mostLikes(blogs)).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 17
+    })
+  })
+})
+
 const listWithOneBlog = [
   {
     _id: '5a422aa71b54a676234d17f8',
