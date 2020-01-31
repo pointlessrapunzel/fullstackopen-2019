@@ -4,9 +4,9 @@
   "description": "blog list application",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "watch": "nodemon index.js",
-    "test": "jest --verbose",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "watch": "cross-env NODE_ENV=development nodemon index.js",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "lint": "eslint ."
   },
   "author": "Valto Aemilius",
@@ -19,9 +19,11 @@
     "mongoose": "^5.8.6"
   },
   "devDependencies": {
-    "jest": "^24.9.0",
+    "cross-env": "^7.0.0",
     "eslint": "^6.8.0",
-    "nodemon": "^2.0.2"
+    "jest": "^24.9.0",
+    "nodemon": "^2.0.2",
+    "supertest": "^4.0.2"
   },
   "jest": {
     "testEnvironment": "node"
