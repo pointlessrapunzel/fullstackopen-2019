@@ -18,15 +18,15 @@ blogsRouter.get('/:id', (req, res, next) => {
 })
 
 // save a new blog
-blogsRouter.post('/', (req, res, next) => {
+blogsRouter.post('/', async (req, res, next) => {
   const blog = new Blog(req.body)
 
-  blog
-    .save()
-    .then(result => {
-      res.status(201).json(result)
-    })
-    .catch(error => next(error))
+  try {
+    const result = await blog.save()
+    res.status(201).json(result)
+  } catch(error) {
+    next(error)
+  }
 })
 
 // delete a blog
