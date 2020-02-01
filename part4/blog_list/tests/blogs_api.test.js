@@ -19,7 +19,7 @@ describe('when there are initially some blogs saved', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    expect(res.body.length).toBe(1)
+    expect(res.body.length).toBe(2)
   })
 
   test('first blog is titled React patterns', async () => {
@@ -84,6 +84,25 @@ describe('when there are initially some blogs saved', () => {
           .post('/api/blogs')
           .send(newBlog)
           .expect(400)
+      })
+  })
+
+  describe('updating info of an individual blog', () => {
+    test ('succeeds when updating title and valid request is sent',
+      async () => {
+        const blogsAtStart = await helper.getBlogsFromDb()
+        const blogToUpdate = blogsAtStart[0]
+
+        blogToUpdate.title = 'Patterns in React'
+
+        await api
+          .put(`/api/blogs/${blogToUpdate.id}`)
+          .send(blogToUpdate)
+          .expect(200)
+
+        const blogsAtEnd = await helper.getBlogsFromDb()
+        const titles = blogsAtEnd.map(b => b.title)
+        expect(titles).toContain(blogToUpdate.title)
       })
   })
 
