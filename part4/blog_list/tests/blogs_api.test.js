@@ -47,11 +47,29 @@ test('a POST request successfully creates a new blog post',
       .expect('Content-Type', /application\/json/)
 
     const response = await api.get('/api/blogs')
-    const titles = response.body.map(r => r.title)
+    const blogTitles = response.body.map(r => r.title)
 
     expect(response.body.length)
       .toBe(helper.initialBlogs.length + 1)
-    expect(titles).toContain('Go To Statement Considered Harmful')
+    expect(blogTitles).toContain('Go To Statement Considered Harmful')
+  })
+
+test('if the likes property of a posted blog is missing, default it to 0',
+  async () => {
+    const newBlog = {
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html'
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+    expect(response.body[response.body.length - 1].likes).toBe(0)
   })
 
 afterAll(() => {

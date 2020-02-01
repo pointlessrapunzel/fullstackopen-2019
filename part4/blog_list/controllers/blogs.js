@@ -19,7 +19,12 @@ blogsRouter.get('/:id', (req, res, next) => {
 
 // save a new blog
 blogsRouter.post('/', async (req, res, next) => {
-  const blog = new Blog(req.body)
+  const blog = new Blog({
+    title: req.body.title,
+    author: req.body.author,
+    url: req.body.url,
+    likes: req.body.likes || 0
+  })
 
   try {
     const result = await blog.save()
