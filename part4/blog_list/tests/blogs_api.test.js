@@ -54,7 +54,7 @@ test('a POST request successfully creates a new blog post',
     expect(blogTitles).toContain('Go To Statement Considered Harmful')
   })
 
-test('if the likes property of a posted blog is missing, default it to 0',
+test('if the likes property of a posted blog is missing, defaults to 0',
   async () => {
     const newBlog = {
       title: 'Go To Statement Considered Harmful',
@@ -70,6 +70,18 @@ test('if the likes property of a posted blog is missing, default it to 0',
 
     const response = await api.get('/api/blogs')
     expect(response.body[response.body.length - 1].likes).toBe(0)
+  })
+
+test('a posted blog with missing title and url props is rejected',
+  async () => {
+    const newBlog = {
+      author: 'Edsger W. Dijkstra'
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
   })
 
 afterAll(() => {
