@@ -1,8 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjVlNDgzNzJhN2ZiNzhlMWI1NDdjZjIxNiIsImlhdCI6MTU4MjE4MTc1OX0.j8fhI-3CkFw2Ou6Lte2ajwzunfkBrO6ge2jbhRWcVHY
 
 {
-  "title": "New cool blog",
+  "title": "Second cool blog",
   "author": "Cool blog author",
   "url": "Url to the cool blog",
   "likes": 0
