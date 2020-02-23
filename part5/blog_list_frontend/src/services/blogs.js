@@ -7,9 +7,18 @@ const setToken = newToken => {
   token = `bearer ${newToken}`
 }
 
-const getAll = () => {
-  const req = axios.get(baseUrl)
-  return req.then(res => res.data)
+const getAll = async () => {
+  const res = await axios.get(baseUrl)
+  return res.data
 }
 
-export default { getAll, setToken }
+const create = async newObj => {
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  const res = await axios.post(baseUrl, newObj, config)
+  return res.data
+}
+
+export default { getAll, create, setToken }
