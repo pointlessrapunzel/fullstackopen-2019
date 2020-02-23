@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import blogsService from './services/blogs'
+import blogService from './services/blogs'
 
 import Login from './components/Login'
 import Blog from './components/Blog'
@@ -9,11 +9,20 @@ function App() {
   const [ user, setUser ] = useState(null)
 
   useEffect(() => {
-    blogsService
+    blogService
       .getAll()
       .then(result => {
         setBlogs(result)
       })
+  }, [])
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
   }, [])
 
   if (!user) {
@@ -22,10 +31,22 @@ function App() {
     )
   }
 
+  const logOut = () => {
+    window.localStorage.clear()
+    setUser(null)
+  }
+
   return (
     <div>
       <h1>blogs</h1>
-      <p>{user.name} logged in</p>
+      <div>
+        {user.name} logged in
+        <button 
+          type="button"
+          onClick={logOut}
+        >log out</button> 
+      </div>
+      <br />
       <div>
         {
           blogs.map(blog => <Blog key={blog.id} blog={blog} />)
