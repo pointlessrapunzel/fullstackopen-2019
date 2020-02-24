@@ -1,0 +1,113 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  height: 100vh;
+  background-color: #F2EBFE;
+}
+
+#root {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  max-width: 600px;
+  width: 600px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+
+  padding: 0 2rem 2rem;
+  border: 2px solid #7A0ECC;
+  border-radius: 2rem;
+  margin-bottom: 10rem;
+}
+
+.container > * {
+  flex: 1;
+}
+
+header {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+}
+
+header > h1 {
+  flex: 1;
+}
+
+header > .message {
+  flex: 1;
+}
+
+h1 {
+  color: #7A0ECC;
+  margin: 0;
+  font-size: 2rem;
+  padding: 1rem 0;
+}
+
+.message {
+  font-size: 1.5rem;
+  border-style: solid;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  flex: 2;
+
+  display: flex;
+}
+
+.message-text {
+  flex: 1;
+}
+
+.error {
+  color: red;
+  background: lightpink;
+}
+
+.warning {
+  color: salmon;
+  background: lightyellow;
+}
+
+.success {
+  color: green;
+  background: lightgreen;
+}
+
+.icon-close {
+    box-sizing: border-box;
+    position: relative;
+    bottom: 12px;
+    left: 12px;
+    display: block;
+    transform: scale(var(--ggs,1));
+    width: 22px;
+    height: 22px;
+    border: 2px solid transparent;
+    border-radius: 40px;
+}
+
+.icon-close::after,
+.icon-close::before {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 16px;
+    height: 2px;
+    background: currentColor;
+    transform: rotate(45deg);
+    border-radius: 5px;
+    top: 8px;
+    left: 1px;
+}
+
+.icon-close::after {
+    transform: rotate(-45deg);
+}

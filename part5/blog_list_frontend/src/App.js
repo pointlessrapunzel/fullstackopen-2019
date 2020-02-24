@@ -2,13 +2,23 @@ import React, { useState, useEffect } from 'react';
 import blogService from './services/blogs'
 
 import AddBlogForm from './components/AddBlogForm'
+import Notification from './components/Notification'
 import Login from './components/Login'
 import Blog from './components/Blog'
 
 function App() {
   const [ blogs, setBlogs ] = useState([])
   const [ user, setUser ] = useState(null)
-  
+  const [ message, setMessage ] = useState(
+    {text: null, type: 'success',
+      clear() {
+        setMessage({...message, text: null})
+      },
+      autoClear() {
+        setTimeout(message.clear, 4000)
+      },
+    })
+
   useEffect(() => {
     blogService
       .getAll()
@@ -28,7 +38,13 @@ function App() {
 
   if (!user) {
     return (
-      <Login setUser={setUser} />
+      <div className="container">
+        <header>
+          <h1>log in to application</h1>
+          <Notification message={message} />
+        </header>
+        <Login setUser={setUser} notif={{ message, setMessage }} />
+      </div>
     )
   }
 
@@ -39,7 +55,6 @@ function App() {
 
   const addBlog = async e => {
     e.preventDefault()
-    console.log('adding blog')
     const [ title, author, url ] = [ 
       e.target[0].value, 
       e.target[1].value, 
@@ -51,17 +66,28 @@ function App() {
     }
 
     try {
-      console.log(blog)
       const savedBlog = await blogService.create(blog)
       setBlogs(blogs.concat(savedBlog))
+      setMessage({...message, type: 'success',
+        text: `a new blog ${savedBlog[0].title} by ${savedBlog[0].author} added`
+      })
+      message.autoClear()
     } catch (exception) {
+      console.error(exception)
+      setMessage({...message, type: 'error', 
+        text: 'Error adding the blog'
+      })
       console.error('ERROR ADDING THE BLOG')
+      message.autoClear()
     }
   }
 
   return (
-    <div>
-      <h1>blogs</h1>
+    <div className='container'>
+      <header>
+        <h1>blogs</h1>
+        <Notification message={message} />
+      </header>
       <div>
         {user.name} logged in
         <button 
@@ -69,9 +95,7 @@ function App() {
           onClick={logOut}
         >log out</button> 
       </div>
-      <br />
       <AddBlogForm submit={addBlog} />
-      <br />
       <div>
         {
           blogs.map(blog => <Blog key={blog.id} blog={blog} />)

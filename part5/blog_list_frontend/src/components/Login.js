@@ -3,9 +3,10 @@ import blogService from '../services/blogs'
 import loginService from '../services/login'
 
 
-const Login = ({ setUser }) => {
+const Login = ({ setUser, notif }) => {
   const [ username, setUsername ] = useState('')
   const [ password, setPassword ] = useState('')
+  const { message, setMessage } = notif
 
   const handleLogin = async e => {
     e.preventDefault()
@@ -23,13 +24,16 @@ const Login = ({ setUser }) => {
       setPassword('')
       setUser(user)
     } catch (exception) {
+      setMessage({...message, type: 'error',
+        text: 'wrong username or password'
+      })
+      message.autoClear()
       console.error('wrong credentials')
     }
   }
 
   return (
     <div>
-      <h1>log in to application</h1>
       <form onSubmit={handleLogin}>
         <div>
           <label>username:
