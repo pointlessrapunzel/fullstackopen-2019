@@ -30,6 +30,23 @@ body {
   flex: 1;
 }
 
+.blog {
+  padding: 0.8rem 0.4rem;
+  border: 1px solid #7A0ECC;
+  margin-bottom: 0.2rem;
+  border-radius: 0.8rem;
+  transition: all .5s;
+}
+
+.blog:hover {
+  background-color: rgba(237, 154, 253, 0.2);
+  cursor: pointer;
+}
+
+.blog-title:hover {
+  text-decoration: underline;
+}
+
 header {
   margin: 1rem 0;
   display: flex;
