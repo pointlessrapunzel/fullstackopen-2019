@@ -1,11 +1,18 @@
 import React, { useState } from 'react'
+import blogsService from '../services/blogs'
 
 const Blog = ({ blog }) => {
   const [shown, setShown] = useState(false)
+  const [likes, setLikes] = useState(blog.likes)
 
   const handleShown = () => setShown(!shown)
 
   const user = blog.user ? blog.user.username : 'added with React'
+
+  const handleLike = async () => {
+    const res = await blogsService.giveLike(blog.id, blog)
+    setLikes(res.likes)
+  }
 
   if (!shown) {
     return (
@@ -23,8 +30,8 @@ const Blog = ({ blog }) => {
         </span>
         <div>{blog.url}</div>
         <div>
-          {blog.likes} likes
-          <button type='button'>like</button>
+          {likes} likes
+          <button type='button' onClick={handleLike}>like</button>
         </div>
         <div>added by {user}</div>
       </div>

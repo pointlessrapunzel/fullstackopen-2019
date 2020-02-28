@@ -18,8 +18,14 @@ const create = async newObj => {
   }
 
   const res = await axios.post(baseUrl, newObj, config)
-  console.log(res)
   return res.data
 }
 
-export default { getAll, create, setToken }
+const giveLike = async (id, obj) => {
+  const url = `${baseUrl}/${id}`
+  obj.likes++
+  const res = await axios.put(url, obj)
+  return res.data
+}
+
+export default { getAll, create, giveLike, setToken }
