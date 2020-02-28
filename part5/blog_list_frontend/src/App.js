@@ -3,6 +3,7 @@ import blogService from './services/blogs'
 
 import AddBlogForm from './components/AddBlogForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import Login from './components/Login'
 import Blog from './components/Blog'
 
@@ -18,6 +19,8 @@ function App() {
         setTimeout(message.clear, 4000)
       },
     })
+
+  const blogFormRef = React.createRef()
 
   useEffect(() => {
     blogService
@@ -55,6 +58,7 @@ function App() {
 
   const addBlog = async e => {
     e.preventDefault()
+    blogFormRef.current.toggleVisibility()
     const [ title, author, url ] = [ 
       e.target[0].value, 
       e.target[1].value, 
@@ -95,7 +99,9 @@ function App() {
           onClick={logOut}
         >log out</button> 
       </div>
-      <AddBlogForm submit={addBlog} />
+      <Togglable buttonLabel='new blog' ref={blogFormRef}>
+        <AddBlogForm submit={addBlog} />
+      </Togglable>
       <div>
         {
           blogs.map(blog => <Blog key={blog.id} blog={blog} />)
