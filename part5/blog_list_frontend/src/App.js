@@ -15,9 +15,10 @@ function App() {
       clear() {
         setMessage({...message, text: null})
       },
-      autoClear() {
+      createMessage(type, text) {
+        setMessage({ ...message, type, text })
         setTimeout(message.clear, 4000)
-      },
+      }
     })
 
   const blogFormRef = React.createRef()
@@ -72,16 +73,13 @@ function App() {
     try {
       const savedBlog = await blogService.create(blog)
       setBlogs(blogs.concat(savedBlog))
-      setMessage({...message, type: 'success',
-        text: `a new blog ${savedBlog[0].title} by ${savedBlog[0].author} added`
-      })
-      message.autoClear()
+      message.createMessage(
+        'success', 
+        `a new blog ${savedBlog[0].title} by ${savedBlog[0].author} added`
+      )
     } catch (exception) {
       console.error(exception)
-      setMessage({...message, type: 'error',
-        text: 'Error adding the blog'
-      })
-      message.autoClear()
+      message.createMessage('error', 'Error adding the blog')
     }
   }
 
@@ -92,6 +90,7 @@ function App() {
         <Blog
           key={blog.id}
           blog={blog}
+          currentUser={user}
           handleLike={() => handleLikeOf(blog)}
           handleDeletion={() => handleDeletionOf(blog)}
         />))
@@ -99,25 +98,22 @@ function App() {
 
   const handleLikeOf = async blog => {
     const res = await blogService.giveLike(blog)
-    console.log(res)
-    setBlogs(blogs.map(b => b.id !== blog.id ? b : res))
+    // server only sends back user id, without username and name,
+    // which causes problems in Blog component.
+    // user is copied from the liked blog, and not from server response.
+    // server doesn't have to make 2 requests to db to populate user
+    setBlogs(blogs.map(b => b.id !== blog.id ? b : { ...res, user: b.user }))
   }
 
   const handleDeletionOf = async blog => {
     if (!window.confirm(`Do you really want to delete ${blog.title} by ${blog.author}?`)) return
     try {
-      const res = await blogService.remove(blog)
+      await blogService.remove(blog)
       setBlogs(blogs.filter(b => b.id !== blog.id))
-      setMessage({...message, type: 'warning',
-        text: `Successfully deleted ${blog.title} by ${blog.author}`
-      })
-      message.autoClear()
+      message.createMessage('warning', `Successfully deleted ${blog.title} by ${blog.author}`)
     } catch(exception) {
       console.error(exception)
-      setMessage({...message, type: 'error',
-        text: 'Error deleting the blog'
-      })
-      message.autoClear()
+      message.createMessage('error', 'Error deleting the blog')
     }
   }
 
