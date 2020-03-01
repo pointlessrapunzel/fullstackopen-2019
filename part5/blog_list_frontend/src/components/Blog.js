@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import blogsService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blogProp }) => {
   const [shown, setShown] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
+  const [blog, setBlog] = useState(blogProp)
 
   const handleShown = () => setShown(!shown)
 
@@ -11,7 +11,7 @@ const Blog = ({ blog }) => {
 
   const handleLike = async () => {
     const res = await blogsService.giveLike(blog.id, blog)
-    setLikes(res.likes)
+    setBlog(res)
   }
 
   if (!shown) {
@@ -30,7 +30,7 @@ const Blog = ({ blog }) => {
         </span>
         <div>{blog.url}</div>
         <div>
-          {likes} likes
+          {blog.likes} likes
           <button type='button' onClick={handleLike}>like</button>
         </div>
         <div>added by {user}</div>

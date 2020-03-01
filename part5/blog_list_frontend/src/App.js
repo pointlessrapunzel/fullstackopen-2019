@@ -95,7 +95,7 @@ function App() {
       <div>
         {user.name} logged in
         <button 
-          type="button"
+          type='button'
           onClick={logOut}
         >log out</button> 
       </div>
@@ -104,7 +104,9 @@ function App() {
       </Togglable>
       <div>
         {
-          blogs.map(blog => <Blog key={blog.id} blog={blog} />)
+          blogs
+            .sort((b1, b2) => b1.likes < b2.likes ? 1 : -1)
+            .map(blog => <Blog key={blog.id} blogProp={blog} />)
         }
       </div>
     </div>
