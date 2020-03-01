@@ -12,20 +12,31 @@ const getAll = async () => {
   return res.data
 }
 
-const create = async newObj => {
+const create = async newBlog => {
   const config = {
     headers: { Authorization: token },
   }
 
-  const res = await axios.post(baseUrl, newObj, config)
+  const res = await axios.post(baseUrl, newBlog, config)
   return res.data
 }
 
-const giveLike = async (id, obj) => {
-  const url = `${baseUrl}/${id}`
-  obj.likes++
-  const res = await axios.put(url, obj)
+const giveLike = async blog => {
+  const url = `${baseUrl}/${blog.id}`
+  blog.likes++
+  const res = await axios.put(url, blog)
   return res.data
 }
 
-export default { getAll, create, giveLike, setToken }
+const remove = async blog => {
+  console.log(token)
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  const url = `${baseUrl}/${blog.id}`
+  const res = await axios.delete(url, config)
+  return res
+}
+
+export default { getAll, create, giveLike, remove, setToken }

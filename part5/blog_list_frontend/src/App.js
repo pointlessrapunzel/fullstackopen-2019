@@ -60,8 +60,8 @@ function App() {
     e.preventDefault()
     blogFormRef.current.toggleVisibility()
     const [ title, author, url ] = [ 
-      e.target[0].value, 
-      e.target[1].value, 
+      e.target[0].value,
+      e.target[1].value,
       e.target[2].value
     ]
 
@@ -78,10 +78,45 @@ function App() {
       message.autoClear()
     } catch (exception) {
       console.error(exception)
-      setMessage({...message, type: 'error', 
+      setMessage({...message, type: 'error',
         text: 'Error adding the blog'
       })
-      console.error('ERROR ADDING THE BLOG')
+      message.autoClear()
+    }
+  }
+
+  const renderBlogs = () => (
+    blogs
+      .sort((b1, b2) => b1.likes < b2.likes ? 1 : -1)
+      .map(blog => (
+        <Blog
+          key={blog.id}
+          blog={blog}
+          handleLike={() => handleLikeOf(blog)}
+          handleDeletion={() => handleDeletionOf(blog)}
+        />))
+  )
+
+  const handleLikeOf = async blog => {
+    const res = await blogService.giveLike(blog)
+    console.log(res)
+    setBlogs(blogs.map(b => b.id !== blog.id ? b : res))
+  }
+
+  const handleDeletionOf = async blog => {
+    if (!window.confirm(`Do you really want to delete ${blog.title} by ${blog.author}?`)) return
+    try {
+      const res = await blogService.remove(blog)
+      setBlogs(blogs.filter(b => b.id !== blog.id))
+      setMessage({...message, type: 'warning',
+        text: `Successfully deleted ${blog.title} by ${blog.author}`
+      })
+      message.autoClear()
+    } catch(exception) {
+      console.error(exception)
+      setMessage({...message, type: 'error',
+        text: 'Error deleting the blog'
+      })
       message.autoClear()
     }
   }
@@ -103,11 +138,7 @@ function App() {
         <AddBlogForm submit={addBlog} />
       </Togglable>
       <div>
-        {
-          blogs
-            .sort((b1, b2) => b1.likes < b2.likes ? 1 : -1)
-            .map(blog => <Blog key={blog.id} blogProp={blog} />)
-        }
+        {renderBlogs()}
       </div>
     </div>
   )
