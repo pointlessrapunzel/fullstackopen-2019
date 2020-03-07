@@ -7,7 +7,7 @@ const Input = ({ name, value, setValue }) => (
         type="text"
         name={name}
         value={value}
-        onChange={({ target }) => setValue(target.value)} 
+        onChange={({ target }) => setValue(target.value)}
       />
     </label>
   </div>

@@ -24,7 +24,7 @@ const Login = ({ setUser, notif }) => {
       setPassword('')
       setUser(user)
     } catch (exception) {
-      setMessage({...message, type: 'error',
+      setMessage({ ...message, type: 'error',
         text: 'wrong username or password'
       })
       message.autoClear()
@@ -37,21 +37,21 @@ const Login = ({ setUser, notif }) => {
       <form onSubmit={handleLogin}>
         <div>
           <label>username:
-            <input 
-              type="text" 
-              name="username" 
-              value={username} 
+            <input
+              type="text"
+              name="username"
+              value={username}
               onChange={({ target }) => setUsername(target.value)}
             />
           </label>
         </div>
         <div>
           <label>password:
-            <input 
-              type="password" 
-              name="password" 
+            <input
+              type="password"
+              name="password"
               value={password}
-              onChange={({ target }) => setPassword(target.value)}  
+              onChange={({ target }) => setPassword(target.value)}
             />
           </label>
         </div>

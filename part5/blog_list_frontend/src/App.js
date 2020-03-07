@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import blogService from './services/blogs'
 
 import AddBlogForm from './components/AddBlogForm'
@@ -11,9 +11,9 @@ function App() {
   const [ blogs, setBlogs ] = useState([])
   const [ user, setUser ] = useState(null)
   const [ message, setMessage ] = useState(
-    {text: null, type: 'success',
+    { text: null, type: 'success',
       clear() {
-        setMessage({...message, text: null})
+        setMessage({ ...message, text: null })
       },
       createMessage(type, text) {
         setMessage({ ...message, type, text })
@@ -60,7 +60,7 @@ function App() {
   const addBlog = async e => {
     e.preventDefault()
     blogFormRef.current.toggleVisibility()
-    const [ title, author, url ] = [ 
+    const [ title, author, url ] = [
       e.target[0].value,
       e.target[1].value,
       e.target[2].value
@@ -74,7 +74,7 @@ function App() {
       const savedBlog = await blogService.create(blog)
       setBlogs(blogs.concat(savedBlog))
       message.createMessage(
-        'success', 
+        'success',
         `a new blog ${savedBlog[0].title} by ${savedBlog[0].author} added`
       )
     } catch (exception) {
@@ -125,10 +125,10 @@ function App() {
       </header>
       <div>
         {user.name} logged in
-        <button 
+        <button
           type='button'
           onClick={logOut}
-        >log out</button> 
+        >log out</button>
       </div>
       <Togglable buttonLabel='new blog' ref={blogFormRef}>
         <AddBlogForm submit={addBlog} />
@@ -140,4 +140,4 @@ function App() {
   )
 }
 
-export default App;
+export default App
